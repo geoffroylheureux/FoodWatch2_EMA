@@ -1,0 +1,97 @@
+<!-- component template -->
+<template>
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="left">
+                <a href="#" class="link back">
+                    <i class="icon icon-back"></i>
+                    <span class="ios-only">Back</span>
+                </a>
+            </div>
+      <div class="title">Food Component</div>
+    </div>
+  </div>
+  <div class="page-content">
+    <a @click="openAlert">Open Alert</a>
+    <div class="searchbar-backdrop"></div>
+<form class="searchbar">
+  <div class="searchbar-inner">
+    <div class="searchbar-input-wrap">
+      <input id="barcode" type="search" placeholder="Search Code">
+      <i class="searchbar-icon"></i>
+      <span class="input-clear-button"></span>
+    </div>
+    <span class="searchbar-disable-button">Cancel</span>
+  </div>
+</form>
+<div> 
+    <button class="button button-outline col button-round" @click="checkAPI"> Check </button>
+  </div>
+    <div> <h1>{{title}} </h1> </div>
+    <div> <img src={{urlImg}}></div>
+    <div class="list simple-list">
+      <ul>
+        {{#each names}}
+        <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    
+      
+    </div>
+
+  </div>
+</div>
+</template>
+<!-- component styles -->
+<style>
+.red-link {
+color: red;
+}
+</style>
+<!-- rest of component data and methods -->
+<script>
+// script must return component object
+var $$= Dom7;
+return {
+  data: function () {
+    return {
+      title: '',
+      urlImg:'',
+      //names: ['John', 'Vladimir', 'Timo'],
+    }
+  },
+  methods: {
+    openAlert: function () {
+      var self = this.$app.dialog.alert('Hello world!');
+    },
+    checkAPI:function(e){
+      var self=this;
+      console.log("clicked");
+      e.preventDefault();
+      var url='https://fr.openfoodfacts.org/api/vo/produit/';
+      var code=$$('input#barcode').val();
+      console.log(code);
+      app.request.get(url+code+'.json', function (json) {
+        json=JSON.parse(json);
+       
+        self.$setState({
+          title: json.product.product_name,
+          urlImg : json.product.image_thumb_url
+        });
+        console.log("load");
+        
+      });
+    }
+  },
+  on: {
+    pageInit: function () {
+    // do something on page init
+    },
+    pageAfterOut: function () {
+    // page has left the view
+    },
+  }
+}
+</script>

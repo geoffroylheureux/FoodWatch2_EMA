@@ -1,0 +1,17 @@
+html,
+.title{
+	color : #FF0000;
+}
+.titled{
+	color : blue ;
+	text-transform: uppercase;
+}
+.titled span {
+	color : green ;
+	transition: all 0.5s;
+}
+.active {
+	font-size : 30px;
+	transition: all 0.5s;
+}
+
